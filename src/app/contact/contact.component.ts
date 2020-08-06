@@ -10,7 +10,7 @@ export class ContactComponent implements OnInit {
 
 
   feedbackForm: FormGroup; // Form group can be built but FormBuilder
-  feedback: Feedback; // Feedback is the value of FormGroup
+  feedback: Feedback; // Feedback is the value of FormGroup [Data Model]
   contactType = ContactType;
   @ViewChild('fform') feedbackFormDirective; // Used to reset
 
