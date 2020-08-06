@@ -11,13 +11,14 @@ import { baseURL } from '../shared/baseurl';
 
 @Component({
   selector: 'app-dishdetail',
-  templateUrl: './dishdetail.component.html ',
+  templateUrl: './dishdetail.component.html',
   styleUrls: ['./dishdetail.component.scss']
 })
 
 export class DishdetailComponent implements OnInit {
 
   baseURL = baseURL;
+  
   dish: Dish;
   dishIds: string[];
   prev: string;
