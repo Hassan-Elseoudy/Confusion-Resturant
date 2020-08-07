@@ -18,11 +18,14 @@ import { baseURL } from '../shared/baseurl';
 export class DishdetailComponent implements OnInit {
 
   baseURL = baseURL;
-  
+  dishcopy: Dish;
+
   dish: Dish;
   dishIds: string[];
   prev: string;
   next: string;
+
+  errMess: string;
 
   comment: Comment = {
     rating: 5,
@@ -62,8 +65,10 @@ export class DishdetailComponent implements OnInit {
 
   ngOnInit(): void {
     this.dishService.getDishIds().subscribe(dishIds => this.dishIds = dishIds);
-    this.route.params.pipe(switchMap((params: Params) => this.dishService.getDish(params['id'])))
-      .subscribe(dish => { this.dish = dish; this.setPrevNext(dish.id); });
+    this.route.params
+      .pipe(switchMap((params: Params) => this.dishService.getDish(params['id'])))
+      .subscribe(dish => { this.dish = dish; this.dishcopy = dish; this.setPrevNext(dish.id); },
+        errmess => this.errMess = (errmess as any));
     this.createForm();
   }
 
@@ -105,6 +110,12 @@ export class DishdetailComponent implements OnInit {
     this.comment.author = this.feedbackForm.value.author;
     this.comment.date = new Date().toISOString();
     this.dish.comments.push(this.comment); // Adding a new comment
+
+    this.dishService.putDish(this.dishcopy)
+      .subscribe(dish => {
+        this.dish = dish; this.dishcopy = dish;
+      },
+        errmess => { this.dish = null; this.dishcopy = null; this.errMess = <any>errmess; });
 
     // Resetting the Feedback form
     this.feedbackForm.reset({
